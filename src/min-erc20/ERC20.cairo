@@ -9,6 +9,12 @@ from starkware.cairo.common.bool import TRUE
 // CONSTRUCTOR
 // 
 
+// @dev intitialized on deployment
+// @param _name the ERC20 token name
+// @param _symbol the ERC20 token symbol
+// @param _decimals the ERC20 token decimals
+// @param initialSupply a Uint256 representation of the token initial supply
+// @param recipient the token owner
 @constructor
 func constructor{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
     _name: felt, _symbol: felt, _decimals: felt, initialSupply: Uint256, recipient: felt
@@ -22,36 +28,42 @@ func constructor{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr
 // GETTERS
 // 
 
+// @dev returns the name of the token
 @view
 func name{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (name: felt) {
     let (name) = ERC20.name();
     return (name,);
 }
 
+// @dev returns the symbol of the token
 @view
-func symbols{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (symbol: felt) {
+func symbol{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (symbol: felt) {
     let (symbol) = ERC20.symbol();
     return (symbol,);
 }
 
+// @dev returns the decimals of the token
 @view
 func decimals{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (decimals: felt) {
     let (decimals) = ERC20.decimals();
     return (decimals,);
 }
 
+// @dev returns the total supply of the token
 @view
 func totalSupply{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (totalSupply: Uint256) {
     let (totalSupply) = ERC20.total_supply();
     return (totalSupply,);
 }
 
+// @dev returns the token balance of an address
 @view
 func balanceOf{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(account: felt) -> (balance: Uint256) {
     let (balance) = ERC20.balance_of(account);
     return (balance,);
 }
 
+// @dev returns the allowance to an address
 @view
 func allowance{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(owner: felt, spender: felt) -> (remaining: Uint256) {
     let (allowance) = ERC20.allowance(owner, spender);
@@ -62,6 +74,9 @@ func allowance{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
 // SETTERS
 // 
 
+// @dev carries out ERC20 token transfer
+// @param recipient the address of the receiver
+// @param amount the Uint256 representation of the transaction amount
 @external
 func transfer{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
     recipient: felt, amount: Uint256
@@ -70,6 +85,10 @@ func transfer{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
     return (TRUE,);
 }
 
+// @dev transfers token on behalf of another account
+// @param sender the from address
+// @param recipient the to address
+// @param amount the amount being sent
 @external
 func transferFrom{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
     sender: felt, recipient: felt, amount: Uint256
@@ -78,6 +97,9 @@ func transferFrom{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_pt
     return (TRUE,);
 }
 
+// @dev approves token to be spent on your behalf
+// @param spender address of the spender
+// @param amount amount being approved for spending
 @external
 func approve{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
     spender: felt, amount: Uint256
