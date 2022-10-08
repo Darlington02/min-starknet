@@ -1,0 +1,10 @@
+["protostar.config"]
+protostar_version = "0.5.0"
+
+["protostar.project"]
+libs_path = "lib"
+
+["protostar.contracts"]
+main = [
+    "src/min-erc20/ERC20.cairo",
+]
