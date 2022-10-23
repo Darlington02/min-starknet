@@ -7,9 +7,9 @@ libs_path = "lib"
 ["protostar.contracts"]
 
 erc20 = [
-    "src/min-erc20/ERC20.cairo",
+    "src/min_erc20/ERC20.cairo",
 ]
 
 ens = [
-    "src/min-ens/ens.cairo",
+    "src/min_ens/ens.cairo",
 ]
