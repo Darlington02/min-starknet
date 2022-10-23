@@ -13,3 +13,7 @@ erc20 = [
 ens = [
     "src/min_ens/ens.cairo",
 ]
+
+amm = [
+    "src/min_amm/amm.cairo",
+]

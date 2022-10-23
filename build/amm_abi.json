@@ -1,0 +1,106 @@
+[
+    {
+        "inputs": [
+            {
+                "name": "account_id",
+                "type": "felt"
+            },
+            {
+                "name": "token_type",
+                "type": "felt"
+            }
+        ],
+        "name": "get_account_token_balance",
+        "outputs": [
+            {
+                "name": "balance",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "token_type",
+                "type": "felt"
+            },
+            {
+                "name": "balance",
+                "type": "felt"
+            }
+        ],
+        "name": "set_pool_token_balance",
+        "outputs": [],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "token_type",
+                "type": "felt"
+            }
+        ],
+        "name": "get_pool_token_balance",
+        "outputs": [
+            {
+                "name": "balance",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "token_a_amount",
+                "type": "felt"
+            },
+            {
+                "name": "token_b_amount",
+                "type": "felt"
+            }
+        ],
+        "name": "add_demo_token",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "token_a",
+                "type": "felt"
+            },
+            {
+                "name": "token_b",
+                "type": "felt"
+            }
+        ],
+        "name": "init_pool",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "token_from",
+                "type": "felt"
+            },
+            {
+                "name": "amount_from",
+                "type": "felt"
+            }
+        ],
+        "name": "swap",
+        "outputs": [
+            {
+                "name": "amount_to",
+                "type": "felt"
+            }
+        ],
+        "type": "function"
+    }
+]
