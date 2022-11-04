@@ -7,7 +7,7 @@ from starkware.cairo.common.cairo_builtins import HashBuiltin
 from starkware.cairo.common.math import assert_not_equal
 from starkware.cairo.common.bool import TRUE
 
-from openzeppelin.utils.constants.library import INVALID_ID, IERC165_ID
+from cairo_contracts.src.openzeppelin.utils.constants.library import INVALID_ID, IERC165_ID
 
 @storage_var
 func ERC165_supported_interfaces(interface_id: felt) -> (is_supported: felt) {
