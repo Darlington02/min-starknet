@@ -1,0 +1,148 @@
+[
+    {
+        "members": [
+            {
+                "name": "tokenContract",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "tokenId",
+                "offset": 1,
+                "type": "Uint256"
+            },
+            {
+                "name": "seller",
+                "offset": 3,
+                "type": "felt"
+            },
+            {
+                "name": "price",
+                "offset": 4,
+                "type": "felt"
+            }
+        ],
+        "name": "Listing",
+        "size": 5,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "low",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "high",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "Uint256",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "data": [
+            {
+                "name": "token",
+                "type": "Listing"
+            }
+        ],
+        "keys": [],
+        "name": "listing_created",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "buyer",
+                "type": "felt"
+            },
+            {
+                "name": "token",
+                "type": "Listing"
+            }
+        ],
+        "keys": [],
+        "name": "listing_sold",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "name": "listing_id",
+                "type": "felt"
+            }
+        ],
+        "name": "get_listing",
+        "outputs": [
+            {
+                "name": "listing",
+                "type": "Listing"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "listing_id",
+                "type": "felt"
+            }
+        ],
+        "name": "get_sale_status",
+        "outputs": [
+            {
+                "name": "status",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_total_listings",
+        "outputs": [
+            {
+                "name": "total_listings",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "token_contract_address",
+                "type": "felt"
+            },
+            {
+                "name": "token_id",
+                "type": "Uint256"
+            },
+            {
+                "name": "price",
+                "type": "felt"
+            }
+        ],
+        "name": "list_token",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "listing_id",
+                "type": "felt"
+            }
+        ],
+        "name": "buy_token",
+        "outputs": [],
+        "type": "function"
+    }
+]

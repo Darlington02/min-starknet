@@ -9,4 +9,4 @@ ens = ["src/min_ens/ens.cairo"]
 amm = ["src/min_amm/amm.cairo"]
 erc721 = ["src/min_erc721/ERC721.cairo"]
 ico = ["src/min_ico/ico.cairo"]
-
+nft_market = ["src/min_nft_marketplace/nft_market.cairo"]
