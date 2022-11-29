@@ -25,22 +25,6 @@
             {
                 "name": "token_type",
                 "type": "felt"
-            },
-            {
-                "name": "balance",
-                "type": "felt"
-            }
-        ],
-        "name": "set_pool_token_balance",
-        "outputs": [],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "token_type",
-                "type": "felt"
             }
         ],
         "name": "get_pool_token_balance",
@@ -51,6 +35,21 @@
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "token_type",
+                "type": "felt"
+            },
+            {
+                "name": "balance",
+                "type": "felt"
+            }
+        ],
+        "name": "set_pool_token_balance",
+        "outputs": [],
         "type": "function"
     },
     {

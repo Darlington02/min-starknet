@@ -1,23 +1,12 @@
-["protostar.config"]
-protostar_version = "0.5.0"
+[project]
+protostar-version = "0.8.1"
+lib-path = "lib"
+cairo-path = ["lib"]
 
-["protostar.project"]
-libs_path = "lib"
+[contracts]
+erc20 = ["src/min_erc20/ERC20.cairo"]
+ens = ["src/min_ens/ens.cairo"]
+amm = ["src/min_amm/amm.cairo"]
+erc721 = ["src/min_erc721/ERC721.cairo"]
+ico = ["src/min_ico/ico.cairo"]
 
-["protostar.contracts"]
-
-erc20 = [
-    "src/min_erc20/ERC20.cairo",
-]
-
-ens = [
-    "src/min_ens/ens.cairo",
-]
-
-amm = [
-    "src/min_amm/amm.cairo",
-]
-
-erc721 = [
-    "src/min_erc721/ERC721.cairo",
-]

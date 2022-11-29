@@ -10,6 +10,7 @@ from starkware.starknet.common.syscalls import (get_caller_address, storage_read
 // CONSTANTS
 // 
 
+
 // @dev the maximum amount of each token that belongs to the AMM
 const BALANCE_UPPER_BOUND = 2 ** 64;
 
@@ -48,21 +49,6 @@ func get_account_token_balance{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, r
     return account_balance.read(account_id, token_type);
 }
 
-// @dev set pool balance for a given token
-// @param token_type Token whose balance is to be set
-// @param balance Amount to be set as balance
-@view
-func set_pool_token_balance{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
-    token_type: felt, balance: felt
-) {
-    with_attr error_message("exceeds maximum allowed tokens!"){
-        assert_nn_le(balance, BALANCE_UPPER_BOUND - 1);
-    }
-
-    pool_balance.write(token_type, balance);
-    return ();
-}
-
 // @dev return the pool's balance
 // @param token_type Token type to get pool balance
 @view
@@ -75,6 +61,21 @@ func get_pool_token_balance{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, rang
 // 
 // EXTERNALS
 // 
+
+// @dev set pool balance for a given token
+// @param token_type Token whose balance is to be set
+// @param balance Amount to be set as balance
+@external
+func set_pool_token_balance{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+    token_type: felt, balance: felt
+) {
+    with_attr error_message("exceeds maximum allowed tokens!"){
+        assert_nn_le(balance, BALANCE_UPPER_BOUND - 1);
+    }
+
+    pool_balance.write(token_type, balance);
+    return ();
+}
 
 // @dev add demo token to the given account
 // @param token_a_amount amount of token a to be added
