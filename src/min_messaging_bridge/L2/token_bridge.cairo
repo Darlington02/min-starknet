@@ -1,12 +1,3 @@
-// this token bridge can be used to send any ERC20 token from an L2 -> L1 and vice versa
-// we would create an ERC20 token + interface on both L1 and L2
-// the ERC20s should have a mint, burn and bridge_admin functionality
-// CAIRO PART:
-// the token bridge should have a storage variable, token_l2_address
-// the token bridge should have a constructor where the address of the token on both l1 and l2 is initialized.
-// it should have an external function, Withdraw that subtracts the balance of the user, then calls the burn function, and submits message to L1
-// it should have an l1_handler deposit that is called when someone tries depositing into L2
-// it should have a getter function, balance that returns the balance of a user when called.
 
 %lang starknet
 

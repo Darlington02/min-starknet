@@ -1,10 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-// this contract should be able to set the l1_token to be bridged.
-// this contract should have a public function for withdrawing to L2
-// this contract should have public function for depositing to l1
-// this contract have a getter function for querying token balance
-
 pragma solidity ^0.8.0;
 
 import "./token/IERC20.sol";
