@@ -35,9 +35,9 @@ There's also a test file available [here](https://github.com/Darlington02/min-st
 ## MIN-NFT-MARKETPLACE
 min-nft-marketplace is a minimal implementation of an NFT Marketplace for buying and selling NFT Tokens.
 
-It implements two external functions, **list_token(token_contract_address, token_id, price)** for listing tokens on the marketplace, and **buy_token(listing_id)** for buying tokens from the marketplace.
+It implements two external functions, `list_token(token_contract_address, token_id, price)` for listing tokens on the marketplace, and `buy_token(listing_id)` for buying tokens from the marketplace.
 
-Events **listing_created** and **listing_sold** are also emitted each time a Token is listed or sold.
+Events `listing_created` and `listing_sold` are also emitted each time a Token is listed or sold.
 
 **Note: Remember to call setApprovalForAll(<contract address>, true) on the contract for the NFT you're listing before calling the list function**
 
@@ -47,3 +47,30 @@ Test file coming soon..
 min-amm is a minimal implementation of an Automated market maker in Cairo. Source codes were gotten and minimally modified from the [Cairo docs](https://www.cairo-lang.org/docs/hello_starknet/amm.html), so you can reference it in case you get confused.
 
 There's also a test file created [here](https://github.com/Darlington02/min-starknet/blob/master/tests/test_amm.cairo).
+
+## MIN-ICO
+min-ico is a minimal implementation of a presale or ICO in Cairo.
+An initial coin offerings (ICOs) is the equivalent of an IPO, a popular way to raise funds for products and services usually related to cryptocurrency. 
+
+The thought process for this application is a user interested in participating in the ICO needs to first register with 0.001ETH by calling the `register` function, then once the ICO duration specified using the `ICO_DURATION` expires, he can now call the external function `claim` to claim his share of ICO tokens.
+
+PS: All users partaking in the ICO pays same amount for registration, and claims equal amount of tokens.
+
+**Note: Remember to call approve(<contract address>, reg_amount) on the StarkNet ETH contract before calling the `register` function**
+
+## MIN-STAKING
+min-staking is a minimal implementation of a staking contract in Cairo. 
+
+Staking is a popular process of locking up a certain amount of your crypto holdings to obtain rewards or earn interests.
+
+The thought process for this application requires a user to first deposit a certain amount of the ERC20 token to be staked by calling the `stake(stake_amount, duration_in_secs)` function, and finally claim the tokens + the accrued interest once the duration is over by calling the `claim_rewards(stake_id)` function.
+
+**Note: Remember to call approve(<contract address>, stake_amount) on the StarkNet ETH contract before calling the `stake` function**
+
+## MIN-ERC20-MESSAGING-BRIDGE
+The ability to create custom messaging bridges on StarkNet for data and asset transfers, is one of the major features that makes StarkNet stand out from other existing rollups. 
+
+In this project, we are going to be creating a simple custom ERC20 Messaging bridge that can help a user transfer an ERC20 token between StarkNet and Ethereum.
+
+## MIN-NFT-MERKLE-DROP
+coming soon...
