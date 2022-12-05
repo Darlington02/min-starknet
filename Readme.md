@@ -8,6 +8,7 @@ This project uses Protostar as a development framework. To get started with Prot
 Note that Protostar currently has support for just Linux and MacOS, so if you are running a Windows OS, try checking out WSL2.
 
 Having installed Protostar, go ahead to clone the repo, by running the command below on a terminal:
+
 ```git clone git@github.com:Darlington02/min-starknet.git```
 
 **PS: Ensure to follow along with the repo, in the order specified below for maximum efficiency, and always read the code comments to effectively understand the underlying codes**
@@ -39,7 +40,7 @@ It implements two external functions, `list_token(token_contract_address, token_
 
 Events `listing_created` and `listing_sold` are also emitted each time a Token is listed or sold.
 
-**Note: Remember to call setApprovalForAll(<contract address>, true) on the contract for the NFT you're listing before calling the list function**
+**Note: Remember to call setApprovalForAll(marketplace_contract_address, true) on the contract for the NFT you're listing before calling the `list_token` function**
 
 Test file coming soon..
 
@@ -65,7 +66,7 @@ Staking is a popular process of locking up a certain amount of your crypto holdi
 
 The thought process for this application requires a user to first deposit a certain amount of the ERC20 token to be staked by calling the `stake(stake_amount, duration_in_secs)` function, and finally claim the tokens + the accrued interest once the duration is over by calling the `claim_rewards(stake_id)` function.
 
-**Note: Remember to call approve(<contract address>, stake_amount) on the StarkNet ETH contract before calling the `stake` function**
+**Note: Remember to call approve(staking_contract_address, stake_amount) on the StarkNet ETH contract before calling the `stake` function**
 
 ## MIN-ERC20-MESSAGING-BRIDGE
 The ability to create custom messaging bridges on StarkNet for data and asset transfers, is one of the major features that makes StarkNet stand out from other existing rollups. 
@@ -74,3 +75,13 @@ In this project, we are going to be creating a simple custom ERC20 Messaging bri
 
 ## MIN-NFT-MERKLE-DROP
 coming soon...
+
+
+# CONTRIBUTION GUIDELINES
+Contributions in form of code modifications or adding new protocols are welcome, but please heed to the following:
+1. Ensure to keep implementation as simple and minimalistic as possible.
+2. Comment codes in details to enable others understand what your codes do. Natspec is the preferred choice.
+3. Keep your codes simple and clean.
+4. If you add a new protocol, please also endeavour to update the Readme with a detailed description of what the protocol does.
+5. When opening PRs, give a detailed description of what you are trying to fix or add.
+6. Let's build a great learning REPO for other developers looking to get started with Cairo. 😉
