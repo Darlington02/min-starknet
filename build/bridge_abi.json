@@ -68,8 +68,12 @@
                 "type": "felt"
             },
             {
-                "name": "amount",
-                "type": "Uint256"
+                "name": "amount_low",
+                "type": "felt"
+            },
+            {
+                "name": "amount_high",
+                "type": "felt"
             }
         ],
         "name": "deposit_to_l2",

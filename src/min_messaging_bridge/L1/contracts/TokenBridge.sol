@@ -27,15 +27,14 @@ contract ERC20Bridge {
         ERC20 = l1_token_address;
     }
     
-    function withdraw_to_l2(address l2_user_address) external payable {
+    function withdraw_to_l2(uint256 l2_user_address, uint256 amount) external payable {
         uint256 user_balance = ERC20.balanceOf(msg.sender);
-        require(user_balance >= msg.value, "TOKEN_BRIDGE: The specified amount exceeds your balance!");
-        ERC20.burn(msg.sender, msg.value);
+        require(user_balance >= amount, "TOKEN_BRIDGE: The specified amount exceeds your balance!");
+        ERC20.burn(msg.sender, amount);
 
-        uint256 l2_address_as_uint256 = uint256(uint160(l2_user_address));
-        uint256[] memory payload = new uint256[](2);
-        payload[0] = l2_address_as_uint256;
-        payload[1] = msg.value;
+        uint256[] memory payload = new uint256[](3);
+        payload[0] = l2_user_address;
+        (payload[1], payload[2]) = toSplitUint(amount);
 
         starknetCore.sendMessageToL2(bridge_l2_address, DEPOSIT_SELECTOR, payload);
     }
@@ -43,17 +42,23 @@ contract ERC20Bridge {
     function deposit_to_l1(uint256 amount) public {
         uint256 caller_as_uint256 = uint256(uint160(msg.sender));
 
-        uint256[] memory payload = new uint256[](2);
+        uint256[] memory payload = new uint256[](3);
         payload[0] = caller_as_uint256;
-        payload[1] = amount;
+        (payload[1], payload[2]) = toSplitUint(amount);
 
         starknetCore.consumeMessageFromL2(bridge_l2_address, payload);
 
         ERC20.mint(msg.sender, amount);
     }
 
-    function my_balance() public view returns (uint256) {
-        uint256 balance = ERC20.balanceOf(msg.sender);
+    function my_balance(address user) public view returns (uint256) {
+        uint256 balance = ERC20.balanceOf(user);
         return (balance);
+    }
+
+    function toSplitUint(uint256 value) internal pure returns (uint256, uint256) {
+        uint256 low = value & ((1 << 128) - 1);
+        uint256 high = value >> 128;
+        return (low, high);
     }
 }

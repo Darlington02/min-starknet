@@ -75,7 +75,8 @@ func withdraw_to_l1{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_
     let (message_payload: felt*) = alloc();
     assert message_payload[0] = l1_address;
     assert message_payload[1] = amount.low;
-    send_message_to_l1(l1_bridge_address, 2, message_payload);
+    assert message_payload[2] = amount.high;
+    send_message_to_l1(l1_bridge_address, 3, message_payload);
 
     return ();
 }
@@ -86,7 +87,7 @@ func withdraw_to_l1{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_
 
 @l1_handler
 func deposit_to_l2{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
-    from_address: felt, user_address: felt, amount: Uint256
+    from_address: felt, user_address: felt, amount_low: felt, amount_high: felt
 ) {
     let (l1_bridge_address) = bridge_l1_address.read();
     let (l2_token_address) = token_l2_address.read();
@@ -95,6 +96,7 @@ func deposit_to_l2{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_p
     }
 
     // transfer amount from locked bridge tokens to the user
+    let amount = Uint256(amount_low, amount_high);
     IERC20.transfer(l2_token_address, user_address, amount);
 
     return ();

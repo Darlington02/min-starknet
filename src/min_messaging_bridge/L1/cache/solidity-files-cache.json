@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/darlingtonnnam/Desktop/programming/Blockchain/Projects/cairo/lil-starknet/src/min_messaging_bridge/L1/contracts/TokenBridge.sol": {
-      "lastModificationDate": 1670165713495,
-      "contentHash": "022f0aba1bb0939e75a99132b492f24c",
+      "lastModificationDate": 1670841147643,
+      "contentHash": "72db087a808f5a4f1ad85321c161068c",
       "sourceName": "contracts/TokenBridge.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -40,8 +40,8 @@
       ]
     },
     "/Users/darlingtonnnam/Desktop/programming/Blockchain/Projects/cairo/lil-starknet/src/min_messaging_bridge/L1/contracts/token/ERC20.sol": {
-      "lastModificationDate": 1670165525714,
-      "contentHash": "004a75e8ec918b6ce609c645a79fbcda",
+      "lastModificationDate": 1670195949264,
+      "contentHash": "6ab5c9fe4fa836f42a1fb562709355a9",
       "sourceName": "contracts/token/ERC20.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -223,8 +223,8 @@
       ]
     },
     "/Users/darlingtonnnam/Desktop/programming/Blockchain/Projects/cairo/lil-starknet/src/min_messaging_bridge/L1/contracts/token/IERC20.sol": {
-      "lastModificationDate": 1670164917082,
-      "contentHash": "04e26be36dee8e0ca36f0ee222e383b8",
+      "lastModificationDate": 1670195990571,
+      "contentHash": "04a135d507cf74a8eb00e7939c71ff73",
       "sourceName": "contracts/token/IERC20.sol",
       "solcConfig": {
         "version": "0.8.17",

@@ -12,7 +12,7 @@ async function main() {
   const TokenBridge = await ethers.getContractFactory("ERC20Bridge");
   //Passing Starknet core contract address and Stake L2 address
   const bridge = await TokenBridge.deploy(
-    "0xde29d060D45901Fb19ED6C6e959EB22d8626708e", //core contract
+    "0xa4eD3aD27c294565cB0DCc993BDdCC75432D498c", //core contract for goerli2
     "0x04d103053e58567b01fa01600094daa59286029d391832f4d4b68172503b7ace", // L2 contract address
     "0x9F7D1801163902A50C168f310691FdC97C346395" //bridge admin address
 
@@ -24,18 +24,9 @@ async function main() {
     bridge.address //bridge contract address
   );
 
+  // Deploying the Token Bridge contract
   console.log("Token Bridge smart contract address:", bridge.address);
   console.log("ERC20 smart contract address:", erc20.address);
-
-  // const data = {
-  //   address: bridge.address,
-  //   abi: JSON.parse(stake.interface.format("json")),
-  // };
-
-  // if (!fs.existsSync("artifacts/ABI")) fs.mkdirSync("artifacts/ABI");
-  // fs.writeFileSync("artifacts/ABI/TokenBridge.json", JSON.stringify(data), {
-  //   flag: "w",
-  // });
 }
 
 main()
