@@ -1,6 +1,6 @@
 # MIN-STARKNET
 
-Min-StarkNet is a side project influenced by Miguel Piedrafita's [Lil-Web3](https://github.com/m1guelpf/lil-web3), aimed at creating minimal, intentionally-limited implementations of different protocols, standards and concepts to help a Cairo beginner learn and become familiar with basic Cairo syntaxes.
+Min-StarkNet is a side project influenced by Miguel Piedrafita's [Lil-Web3](https://github.com/m1guelpf/lil-web3), aimed at creating minimal, intentionally-limited implementations of different protocols, standards and concepts to help a Cairo beginner learn and become familiar with basic Cairo syntaxes, quickly advancing from beginner to intermediate😉.
 
 ## Getting Started
 This project uses Protostar as a development framework. To get started with Protostar, follow the guides contained in the [official docs](https://docs.swmansion.com/protostar/docs/tutorials/installation).
@@ -73,15 +73,18 @@ The ability to create custom messaging bridges on StarkNet for data and asset tr
 
 In this project, we are going to be creating a simple custom ERC20 Messaging bridge that can help a user transfer an ERC20 token between StarkNet and Ethereum.
 
-## MIN-NFT-MERKLE-DROP
+The thought process for this application, is we have an ERC20 token deployed on StarkNet, which we intend bridging to Ethereum, to enable users send their tokens between layers. We first have to deploy a clone of our ERC20 token on Ethereum, with zero initial supply (this is done to ensure that the total supply across the different layers when summed up, remains constant). We then deploy our token bridge on both layers, setting the ERC20 token we want to particularly bridge. 
+
+Each time a bridge happens from L2 -> L1, the bridged tokens are locked in the L2 bridge contract, and same amount of the bridged tokens are minted on L1 for the user, and each time a bridge happens from L1 -> L2, the bridged tokens are burnt, and the same amount of bridged tokens is released or transferred from the L2 bridge contract to the user, thereby always keeping total supply constant.
+
+## MIN-UPGRADABILITY
 coming soon...
 
 
 # CONTRIBUTION GUIDELINES
-Contributions in form of code modifications or adding new protocols are welcome, but please heed to the following:
-1. Ensure to keep implementation as simple and minimalistic as possible.
+In order to ensure this repository is kept as simple and minimalistic as possible to not get beginners confused, contributions in form of adding new protocols would not accepted, but you could contribute in form of modifications to the existing projects listed. Just ensure to heed to the following:
+1. Keep implementation as simple and minimalistic as possible.
 2. Comment codes in details to enable others understand what your codes do. Natspec is the preferred choice.
 3. Keep your codes simple and clean.
-4. If you add a new protocol, please also endeavour to update the Readme with a detailed description of what the protocol does.
-5. When opening PRs, give a detailed description of what you are trying to fix or add.
-6. Let's build a great learning REPO for other developers looking to get started with Cairo. 😉
+4. When opening PRs, give a detailed description of what you are trying to fix or add.
+6. Let's build a great learning REPO for frens looking to get started with Cairo. 😉
