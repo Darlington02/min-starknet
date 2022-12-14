@@ -1,5 +1,5 @@
 [project]
-protostar-version = "0.8.1"
+protostar-version = "0.9.0"
 lib-path = "lib"
 cairo-path = ["lib"]
 
@@ -13,3 +13,6 @@ nft_market = ["src/min_nft_marketplace/nft_market.cairo"]
 staking = ["src/min_staking/staking.cairo"]
 bridge_erc20 = ["src/min_messaging_bridge/L2/token/ERC20.cairo"]
 bridge = ["src/min_messaging_bridge/L2/token_bridge.cairo"]
+
+# gateway-url = "https://alpha4-2.starknet.io/"
+# chain-id = 393402129659245999442226

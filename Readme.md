@@ -11,7 +11,7 @@ Having installed Protostar, go ahead to clone the repo, by running the command b
 
 ```git clone git@github.com:Darlington02/min-starknet.git```
 
-**PS: Ensure to follow along with the repo, in the order specified below for maximum efficiency, and always read the code comments to effectively understand the underlying codes**
+**PS: Ensure to follow along with the repo, in the order specified below for maximum efficiency, and always read the code comments to effectively understand the underlying codes, AND might be useful to also note that goerli2 was the network mostly used throughout development**
 
 ## MIN-ENS
 Min-ens is a simple implementation of a namespace service in Cairo. It contains a single external function `store_name` and a single view function `get_name`.
@@ -80,11 +80,49 @@ Each time a bridge happens from L2 -> L1, the bridged tokens are locked in the L
 ## MIN-UPGRADABILITY
 coming soon...
 
+# PLAYGROUND
+Looking for an already deployed version of these contracts? check them out on StarkScan (Goerli2).
+
+**PS: If you ever run into an allowance error, you probably needed to call the approve function on the ETH contract beforehand..**
+
+## MIN-ENS
+- `ENS` - 0x0340be76bc3bb090a3a339a8ccf6381e7d6620e80e047ddd814268c286dc1e66
+
+## MIN-ERC20
+- `ERC20` - 0x064b2aee30d3693237d0e4f1792b0bde2d80f799d2f95ee7cc2bb339b8fce23e
+
+## MIN-ERC721
+- `ERC721` - 0x02f5222bdb8e68b59736e1490c5ec36ab32f609e4e7058a4042841a51a6cec94
+
+## MIN-NFT-MARKETPLACE
+- `ERC721` - 0x02f5222bdb8e68b59736e1490c5ec36ab32f609e4e7058a4042841a51a6cec94
+- `NFTMarket` - 0x05b3f40d5cdac77a4e922d8765a5a6ae96e64dc2a4796187d9a25166d0da2235
+
+## MIN-AMM
+`AMM` - 0x0219cc693096e2d7df6d6145758fe1b63218725054c61e1fe98cf862cb4c2eb9
+
+## MIN-ICO
+- `ERC20` - 0x064b2aee30d3693237d0e4f1792b0bde2d80f799d2f95ee7cc2bb339b8fce23e
+- `ICO` - 0x028afec7907fa30e16aa62e89658d2a416e00f7917a57502d5dc0e43755df103
+
+## MIN-STAKING
+- `ERC20` - 0x064b2aee30d3693237d0e4f1792b0bde2d80f799d2f95ee7cc2bb339b8fce23e
+- `STAKING` - 0x06aaa18df6c7a39373d0e153354eda4e1471fab4616837a9ae3295b890abd03a
+
+## MIN-MESSAGING-BRIDGE
+- `ERC20` - 0x064b2aee30d3693237d0e4f1792b0bde2d80f799d2f95ee7cc2bb339b8fce23e
+- `L2 BRIDGE ADDRESS` - 0x01c22dddbdbb040268b0a2bb79d62602a57726b2532ee015980f033eb10d8472
+- `L1 BRIDGE ADDRESS` - 0xD1A3D5b3Aa75f0884001b2F92d4c7E6050B2eF97
+
+## MIN-UPGRADABILITY
+
 
 # CONTRIBUTION GUIDELINES
-In order to ensure this repository is kept as simple and minimalistic as possible to not get beginners confused, contributions in form of adding new protocols would not accepted, but you could contribute in form of modifications to the existing projects listed. Just ensure to heed to the following:
+In order to ensure this repository is kept as simple and minimalistic as possible to not get beginners confused, contributions in form of adding new protocols would not be accepted, but you could contribute in form of modifications to the existing projects listed. Just ensure to heed the following:
 1. Keep implementation as simple and minimalistic as possible.
 2. Comment codes in details to enable others understand what your codes do. Natspec is the preferred choice.
 3. Keep your codes simple and clean.
 4. When opening PRs, give a detailed description of what you are trying to fix or add.
-6. Let's build a great learning REPO for frens looking to get started with Cairo. 😉
+Let's build a great learning REPO for frens looking to get started with Cairo. 😉
+
+**If this repo was helpful, do give it a STAR!**
