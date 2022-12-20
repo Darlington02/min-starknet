@@ -22,9 +22,9 @@ staking = ["src/min_staking/staking.cairo"]
 bridge_erc20 = ["src/min_messaging_bridge/L2/token/ERC20.cairo"]
 bridge = ["src/min_messaging_bridge/L2/token_bridge.cairo"]
 # MIN-UPGRADABILITY
-proxy = ["src/min-upgradability/proxy.cairo"]
-implementation_v0 = ["src/min-upgradability/implementations/implementation_v0.cairo"]
-implementation_v1 = ["src/min-upgradability/implementations/implementation_v1.cairo"]
+proxy = ["src/min_upgradability/proxy.cairo"]
+implementation_v0 = ["src/min_upgradability/implementations/implementation_v0.cairo"]
+implementation_v1 = ["src/min_upgradability/implementations/implementation_v1.cairo"]
 
 # gateway-url = "https://alpha4-2.starknet.io/"
 # chain-id = 393402129659245999442226
