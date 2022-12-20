@@ -13,14 +13,17 @@ from src.min_messaging_bridge.L2.token.IERC20 import IERC20
 // STORAGE VARIABLES
 //
 
+// @dev address of erc20 token on layer2
 @storage_var
 func token_l2_address() -> (address: felt) {
 }
 
+// @dev address of bridge on layer1
 @storage_var
 func bridge_l1_address() -> (address: felt) {
 }
 
+// @dev address of bridge admin
 @storage_var
 func admin() -> (address: felt) {
 }
@@ -30,6 +33,9 @@ func admin() -> (address: felt) {
 // CONSTRUCTOR
 // 
 
+// @dev initialized on deployment
+// @param l2_address address of erc20 token on layer2
+// @param admin_address address of the bridge admin
 @constructor
 func constructor{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
     l2_address: felt, admin_address: felt
@@ -44,6 +50,8 @@ func constructor{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr
 // EXTERNALS
 // 
 
+// @dev sets the bridge l1 address. Can be done by only the bridge admin
+// @param address of token bridge on l1
 @external
 func set_bridge_l1_address{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
     address: felt
@@ -59,6 +67,9 @@ func set_bridge_l1_address{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range
     return ();
 }
 
+// @dev withdraws or sends token to an l1 address
+// @param amount amount of tokens to be withdrawn
+// @param l1_address l1 address where the tokens should be sent
 @external
 func withdraw_to_l1{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
     amount: Uint256, l1_address: felt
@@ -71,6 +82,7 @@ func withdraw_to_l1{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_
     
     // lock the tokens from the caller's wallet in bridge contract
     IERC20.transferFrom(l2_token_address, caller, this_contract, amount);
+
     // send message to l1
     let (message_payload: felt*) = alloc();
     assert message_payload[0] = l1_address;
@@ -85,6 +97,11 @@ func withdraw_to_l1{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_
 // L1 HANDLERS
 // 
 
+// @dev L1 handler to deposit funds into layer2.
+// @param from_address the l1 bridge contract address.
+// @param user_address the l2 user to receive the funds.
+// @param amount_low the low part of the amount (in uint256).
+// @param amount_high the high part of the amount (in uint256).
 @l1_handler
 func deposit_to_l2{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
     from_address: felt, user_address: felt, amount_low: felt, amount_high: felt
@@ -106,6 +123,9 @@ func deposit_to_l2{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_p
 // GETTERS
 // 
 
+// @dev returns the erc20 balance of an address
+// @param address the address whose balance is to be queried
+// @returns the balance of the address
 @view
 func my_balance{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(address: felt) -> (balance: Uint256) {
     let (token_address) = token_l2_address.read();

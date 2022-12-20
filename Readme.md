@@ -13,6 +13,8 @@ Having installed Protostar, go ahead to clone the repo, by running the command b
 
 **PS: Ensure to follow along with the repo, in the order specified below for maximum efficiency, and always read the code comments to effectively understand the underlying codes, AND might be useful to also note that goerli2 was the network mostly used throughout development**
 
+Finally, this repository is targeted at those with basic understanding of how Cairo and StarkNet works. If you do not understand basic Cairo syntax, then take out time to first go through my Journey through Cairo series on [medium](https://medium.com/@darlingtonnnam).
+
 ## MIN-ENS
 Min-ens is a simple implementation of a namespace service in Cairo. It contains a single external function `store_name` and a single view function `get_name`.
 A storage variable `names` which is a mapping of **address** to **name**, is also used to store the names assigned to every address, and an event **stored_name** which is emitted each time a name is stored!
@@ -78,7 +80,23 @@ The thought process for this application, is we have an ERC20 token deployed on 
 Each time a bridge happens from L2 -> L1, the bridged tokens are locked in the L2 bridge contract, and same amount of the bridged tokens are minted on L1 for the user, and each time a bridge happens from L1 -> L2, the bridged tokens are burnt, and the same amount of bridged tokens is released or transferred from the L2 bridge contract to the user, thereby always keeping total supply constant.
 
 ## MIN-UPGRADABILITY
-coming soon...
+With Regenesis at hand, its become a neccessity to understand how Upgradeable contracts work, in order to successfully migrate existing contracts to Cairo v1.0. In this section we are going to be learning how to create upgradeable contracts by coding up an upgradeable ERC20 token.
+
+In simple terms an Upgradeable contract is one which allows you change the underlying code/logic of your smart contract, without neccessarily altering the entry point (contract address) of your dApp. This is done by separating your contracts into a Proxy and implementation. The Proxy serves as the entry point and also holds the contract storage, whilst the Implementation contains the code/logic of your dApp. For a deeper dive checkout this article by David Baretto [here](https://medium.com/starknet-edu/creating-upgradable-smart-contracts-on-starknet-12b7d9bd60c7)
+
+Thanks to the team at Openzeppelin, we already have a good template to follow. First we'd need to copy the [proxy contract](https://github.com/OpenZeppelin/cairo-contracts/blob/main/src/openzeppelin/upgrades/presets/Proxy.cairo), into our repo. This proxy contract contains some important functions we'd need to understand:
+- The `constructor` which takes in 4 params: `implementation_hash` which is the class hash of our implementation contract, `selector` which is the selector name of our initializer function (1295919550572838631247819983596733806859788957403169325509326258146877103642), `calldata_len` which is the length of our calldata (implementation contract's constructor arguments), and `calldata` which is the implementation contract's constructor arguments. The constructor sets the impelementation hash, and initializes the implementation contract.
+
+- The `__default__` function which is responsible for redirecting any function call whose selector can't be found in the proxy's contract to the implementation.
+
+- The `__l1_default__` function which is responsible for redirecting any function made to an @l1_handler whose selector can't be found in the proxy's contract to the implementation.
+
+Finally we create our implementation contracts adding functions such as `upgrade` for upgrading the implementation hash, `setAdmin` for setting the Proxy admin, `getImplementationHash` for getting the implementation contract class hash and `getAdmin` for getting the current proxy admin.
+
+Note that the implementation contract should never:
+
+1. Be deployed like a regular contract. Instead, the implementation contract should be declared (which creates a DeclaredClass containing its hash and abi).
+2. Set its initial state with a traditional constructor (decorated with @constructor). Instead, use an initializer method that invokes the Proxy constructor.
 
 # PLAYGROUND
 Looking for an already deployed version of these contracts? check them out on StarkScan (Goerli2).
@@ -115,10 +133,14 @@ Looking for an already deployed version of these contracts? check them out on St
 - `L1 BRIDGE ADDRESS` - 0xD1A3D5b3Aa75f0884001b2F92d4c7E6050B2eF97
 
 ## MIN-UPGRADABILITY
-
+- `Proxy class hash` - 0x601407cf04ab1fbab155f913db64891dc749f4343bc9e535bd012234a46dc61
+- `Implementation_v0 class hash` - 0x707e746b94ec595a094ff53dfacb0b6ed8117ba7941844766dd34ab7872107a
+- `Implementation_v1 class hash` - 0x1b439f0e941915a2a45bed6d5affed2966010bb5e9b682bc4137178af2a9667
+- `Deployed contract` - 0x00701816faf15bf9a97132dbc84d594bf4dd12cea878a8e46254a504ee2187e8
 
 # CONTRIBUTION GUIDELINES
-In order to ensure this repository is kept as simple and minimalistic as possible to not get beginners confused, contributions in form of adding new protocols would not be accepted, but you could contribute in form of modifications to the existing projects listed. Just ensure to heed the following:
+In order to ensure this repository is kept as simple and minimalistic as possible to not get beginners confused, contributions in form of adding new protocols would not be accepted, but if you feel its worth adding to the list, send me a DM on Twitter [Darlington Nnam](https://twitter.com/0xdarlington). In the meantime, you could contribute in form of modifications to the existing projects listed. A good place to get started is checking out the open issues.
+Ensure to heed the following in the course of contribution:
 1. Keep implementation as simple and minimalistic as possible.
 2. Comment codes in details to enable others understand what your codes do. Natspec is the preferred choice.
 3. Keep your codes simple and clean.

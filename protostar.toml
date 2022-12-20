@@ -4,15 +4,27 @@ lib-path = "lib"
 cairo-path = ["lib"]
 
 [contracts]
+# MIN-ERC20
 erc20 = ["src/min_erc20/ERC20.cairo"]
+# MIN-ENS
 ens = ["src/min_ens/ens.cairo"]
+# MIN-AMM
 amm = ["src/min_amm/amm.cairo"]
+# MIN-ERC721
 erc721 = ["src/min_erc721/ERC721.cairo"]
+# MIN-ICO
 ico = ["src/min_ico/ico.cairo"]
+# MIN-NFT-MARKETPLACE
 nft_market = ["src/min_nft_marketplace/nft_market.cairo"]
+# MIN-STAKING
 staking = ["src/min_staking/staking.cairo"]
+# MIN-MESSAGING-BRIDGE
 bridge_erc20 = ["src/min_messaging_bridge/L2/token/ERC20.cairo"]
 bridge = ["src/min_messaging_bridge/L2/token_bridge.cairo"]
+# MIN-UPGRADABILITY
+proxy = ["src/min-upgradability/proxy.cairo"]
+implementation_v0 = ["src/min-upgradability/implementations/implementation_v0.cairo"]
+implementation_v1 = ["src/min-upgradability/implementations/implementation_v1.cairo"]
 
 # gateway-url = "https://alpha4-2.starknet.io/"
 # chain-id = 393402129659245999442226
