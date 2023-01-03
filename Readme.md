@@ -11,7 +11,7 @@ Having installed Protostar, go ahead to clone the repo, by running the command b
 
 ```git clone git@github.com:Darlington02/min-starknet.git```
 
-**PS: Ensure to follow along with the repo, in the order specified below for maximum efficiency, and always read the code comments to effectively understand the underlying codes, AND might be useful to also note that goerli2 was the network mostly used throughout development**
+**PS: This project has two branches! The `master` branch serves as a guide, the `develop` branch gives a boilerplate for building on your own. Once you are ready to practice on your own, simply checkout to the `develop` branch which contains interfaces with no codes for each of the listed projects, and ensure to follow along with the repo, in the order specified below for maximum efficiency. Endeavour to always read the code comments to effectively understand the underlying codes, AND might be useful to also note that goerli2 was the network mostly used throughout development**
 
 Finally, this repository is targeted at those with basic understanding of how Cairo and StarkNet works. If you do not understand basic Cairo syntax, then take out time to first go through my Journey through Cairo series on [medium](https://medium.com/@darlingtonnnam).
 
