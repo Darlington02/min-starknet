@@ -18,9 +18,14 @@ const ICO_DURATION = 86400; //24 hours to seconds
 // STORAGE VARIABLE
 // 
 
+// @dev stores the address of the token used for purchasing the ICO token.
+@storage_var
+func token_address_A() -> (address: felt) {
+}
+
 // @dev stores the address of the ICO token
 @storage_var
-func token_address() -> (address: felt) {
+func token_address_B() -> (address: felt) {
 }
 
 // @dev stores the ico admin's address
@@ -60,10 +65,11 @@ func ico_end_time() -> (end_time: felt) {
 // @param adminAddress address of ICO admin
 @constructor
 func constructor{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
-    tokenAddress: felt, adminAddress: felt
+    acceptedToken: felt, icoTokenAddress: felt, adminAddress: felt
 ) {
     admin_address.write(adminAddress);
-    token_address.write(tokenAddress);
+    token_address_A.write(acceptedToken);
+    token_address_B.write(icoTokenAddress);
 
     // get and store the ico starting and ending time
     let (current_time) = get_block_timestamp();
@@ -82,7 +88,7 @@ func register{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}()
     alloc_locals;
     let (this_contract) = get_contract_address();
     let (caller) = get_caller_address();
-    let (token) = token_address.read();
+    let (tokenA) = token_address_A.read();
     let (start_time) = ico_start_time.read();
     let regprice_in_uint = Uint256(REGPRICE, 0);
 
@@ -102,13 +108,13 @@ func register{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}()
 
     // check that the user has beforehand approved the address of the ICO contract to spend the registration amount from his ETH balance
     with_attr error_message("ICO: You need to approve at least 0.001 ETH for registration!"){
-        let (approved) = IERC20.allowance(ETH_CONTRACT, caller, this_contract);
+        let (approved) = IERC20.allowance(tokenA, caller, this_contract);
         let (less_than) = uint256_signed_nn_le(regprice_in_uint, approved);
         assert less_than = 1;
     }
 
     // Transfer the registration price from the caller to the ICO contract address
-    IERC20.transferFrom(ETH_CONTRACT, caller, this_contract, regprice_in_uint);
+    IERC20.transferFrom(tokenA, caller, this_contract, regprice_in_uint);
 
     // add the caller to the list of registered addresses
     registered_address.write(caller, 1);
@@ -123,6 +129,12 @@ func claim{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
 ) {
     let (is_registered) = registered_address.read(address);
 
+
+    // check that the caller is registered
+    with_attr error_message("ICO: You are not eligible for this ICO"){
+        assert is_registered = 1;
+    }
+
     // check that the ICO is ended
     with_attr error_message("ICO: You can only claim tokens after the ICO is over!"){
         let (start_time) = ico_start_time.read();
@@ -132,10 +144,6 @@ func claim{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
         assert less_than = 1;
     }
 
-    // check that the caller is registered
-    with_attr error_message("ICO: You are not eligible for this ICO"){
-        assert is_registered = 1;
-    }
 
     // check that caller has not already claimed
     with_attr error_message("ICO: You have already claimed your tokens!"){
@@ -146,9 +154,9 @@ func claim{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
     // transfer the claim amount to the user
     let claim_amount = Uint256(20, 0);
     let (this_contract) = get_contract_address();
-    let (token) = token_address.read();
+    let (tokenB) = token_address_B.read();
     let (admin) = admin_address.read();
-    IERC20.transferFrom(token, admin, address, claim_amount);
+    IERC20.transfer(tokenB, address, claim_amount);
     
     // add the caller to the list of claimed address to prevent re-claiming
     claimed_address.write(address, 1);

@@ -9,7 +9,7 @@ from starkware.starknet.common.syscalls import get_caller_address
 
 // @dev stores the mapping of a name to each address
 @storage_var
-func names(address) -> (name: felt) {
+func names(address: felt) -> (name: felt) {
 }
 
 // @dev emitted each time a name is stored
