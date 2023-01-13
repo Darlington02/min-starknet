@@ -157,8 +157,8 @@ func buy_token{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
         assert 0 = is_sold;
     }
     
-    // check that the user has beforehand approved the address of the ICO contract to spend the listing price from his ETH balance
-    with_attr error_message("ICO: You need to approve the listing price in ETH to be spent!"){
+    // check that the user has beforehand approved the address of the NFTMarket contract to spend the listing price from his ETH balance
+    with_attr error_message("NFTMarket: You need to approve the listing price in ETH to be spent!"){
         let (approved) = IERC20.allowance(ETH_CONTRACT, buyer, this_contract);
         let (less_than) = uint256_signed_nn_le(listing_price_in_uint, approved);
         assert less_than = 1;
