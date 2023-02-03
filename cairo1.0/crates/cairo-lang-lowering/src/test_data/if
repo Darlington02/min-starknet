@@ -1,0 +1,310 @@
+//! > Test boolean if.
+
+//! > test_function_name
+test_function_lowering
+
+//! > function
+fn foo(a: bool, x: felt) -> felt {
+    if a {
+        1
+    } else {
+        x
+    }
+}
+
+//! > function_name
+foo
+
+//! > module_code
+
+//! > semantic_diagnostics
+
+//! > lowering_diagnostics
+
+//! > lowering_structured
+blk0:
+Inputs: v2: ()
+Initial refs:
+Statements:
+  (v3: core::felt) <- 1u
+End:
+  Callsite({v3 -> v5})
+
+blk1:
+Inputs: v4: ()
+Initial refs:
+Statements:
+End:
+  Callsite({v1 -> v5})
+
+blk2 (root):
+Inputs: v0: core::bool, v1: core::felt
+Initial refs:
+Statements:
+  () <- match_enum(v0) {
+    bool::False => blk1,
+    bool::True => blk0,
+  }
+End:
+  Return(v5)
+
+//! > lowering_flat
+blk0:
+Inputs: v2: ()
+Statements:
+  (v3: core::felt) <- 1u
+End:
+  Callsite({v3 -> v5})
+
+blk1:
+Inputs: v4: ()
+Statements:
+End:
+  Callsite({v1 -> v5})
+
+blk2 (root):
+Inputs: v0: core::bool, v1: core::felt
+Statements:
+  () <- match_enum(v0) {
+    bool::False => blk1,
+    bool::True => blk0,
+  }
+End:
+  Return(v5)
+
+//! > ==========================================================================
+
+//! > Test if analyzer.
+
+//! > test_function_name
+test_function_lowering
+
+//! > function
+fn foo(x: felt) -> felt {
+    if x == 0 {
+        1
+    } else {
+        x
+    }
+}
+
+//! > function_name
+foo
+
+//! > module_code
+
+//! > semantic_diagnostics
+
+//! > lowering_diagnostics
+
+//! > lowering_structured
+blk0:
+Inputs:
+Initial refs:
+Statements:
+  (v1: core::felt) <- 1u
+End:
+  Callsite({v1 -> v3})
+
+blk1:
+Inputs: v2: core::NonZero::<core::felt>
+Initial refs:
+Statements:
+End:
+  Callsite({v0 -> v3})
+
+blk2 (root):
+Inputs: v0: core::felt
+Initial refs:
+Statements:
+  () <- match core::felt_is_zero(v0) {
+    IsZeroResult::Zero => blk0,
+    IsZeroResult::NonZero => blk1,
+  }
+End:
+  Return(v3)
+
+//! > lowering_flat
+blk0:
+Inputs:
+Statements:
+  (v1: core::felt) <- 1u
+End:
+  Callsite({v1 -> v3})
+
+blk1:
+Inputs: v2: core::NonZero::<core::felt>
+Statements:
+End:
+  Callsite({v0 -> v3})
+
+blk2 (root):
+Inputs: v0: core::felt
+Statements:
+  () <- match core::felt_is_zero(v0) {
+    IsZeroResult::Zero => blk0,
+    IsZeroResult::NonZero => blk1,
+  }
+End:
+  Return(v3)
+
+//! > ==========================================================================
+
+//! > Test if without else.
+
+//! > test_function_name
+test_function_lowering
+
+//! > function
+fn foo(x: felt) -> felt {
+    if 0 == x {
+        return 10;
+    }
+    20
+}
+
+//! > function_name
+foo
+
+//! > module_code
+
+//! > semantic_diagnostics
+
+//! > lowering_diagnostics
+
+//! > lowering_structured
+blk0:
+Inputs:
+Initial refs:
+Statements:
+  (v1: core::felt) <- 10u
+End:
+  Return(v1)
+
+blk1:
+Inputs: v2: core::NonZero::<core::felt>
+Initial refs:
+Statements:
+End:
+  Callsite({})
+
+blk2 (root):
+Inputs: v0: core::felt
+Initial refs:
+Statements:
+  () <- match core::felt_is_zero(v0) {
+    IsZeroResult::Zero => blk0,
+    IsZeroResult::NonZero => blk1,
+  }
+  (v3: core::felt) <- 20u
+End:
+  Return(v3)
+
+//! > lowering_flat
+blk0:
+Inputs:
+Statements:
+  (v1: core::felt) <- 10u
+End:
+  Return(v1)
+
+blk1:
+Inputs: v2: core::NonZero::<core::felt>
+Statements:
+End:
+  Callsite({})
+
+blk2 (root):
+Inputs: v0: core::felt
+Statements:
+  () <- match core::felt_is_zero(v0) {
+    IsZeroResult::Zero => blk0,
+    IsZeroResult::NonZero => blk1,
+  }
+  (v3: core::felt) <- 20u
+End:
+  Return(v3)
+
+//! > ==========================================================================
+
+//! > Test if x == y
+
+//! > test_function_name
+test_function_lowering
+
+//! > function
+fn foo(x: felt, y: felt, z: felt, w: felt) -> felt {
+    if x + y == z - w {
+        0
+    } else {
+        1
+    }
+}
+
+//! > function_name
+foo
+
+//! > module_code
+
+//! > semantic_diagnostics
+
+//! > lowering_diagnostics
+
+//! > lowering_structured
+blk0:
+Inputs:
+Initial refs:
+Statements:
+  (v7: core::felt) <- 0u
+End:
+  Callsite({v7 -> v10})
+
+blk1:
+Inputs: v8: core::NonZero::<core::felt>
+Initial refs:
+Statements:
+  (v9: core::felt) <- 1u
+End:
+  Callsite({v9 -> v10})
+
+blk2 (root):
+Inputs: v0: core::felt, v1: core::felt, v2: core::felt, v3: core::felt
+Initial refs:
+Statements:
+  (v4: core::felt) <- core::FeltAdd::add(v0, v1)
+  (v5: core::felt) <- core::FeltSub::sub(v2, v3)
+  (v6: core::felt) <- core::FeltSub::sub(v4, v5)
+  () <- match core::felt_is_zero(v6) {
+    IsZeroResult::Zero => blk0,
+    IsZeroResult::NonZero => blk1,
+  }
+End:
+  Return(v10)
+
+//! > lowering_flat
+blk0:
+Inputs:
+Statements:
+  (v7: core::felt) <- 0u
+End:
+  Callsite({v7 -> v10})
+
+blk1:
+Inputs: v8: core::NonZero::<core::felt>
+Statements:
+  (v9: core::felt) <- 1u
+End:
+  Callsite({v9 -> v10})
+
+blk2 (root):
+Inputs: v0: core::felt, v1: core::felt, v2: core::felt, v3: core::felt
+Statements:
+  (v4: core::felt) <- core::felt_add(v0, v1)
+  (v5: core::felt) <- core::felt_sub(v2, v3)
+  (v6: core::felt) <- core::felt_sub(v4, v5)
+  () <- match core::felt_is_zero(v6) {
+    IsZeroResult::Zero => blk0,
+    IsZeroResult::NonZero => blk1,
+  }
+End:
+  Return(v10)

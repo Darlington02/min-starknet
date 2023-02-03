@@ -1,0 +1,99 @@
+//! > Test unexpected argument types for operators.
+
+//! > test_function_name
+test_function_diagnostics
+
+//! > function
+fn foo(a: MyType) {
+    a + a * a;
+}
+
+//! > function_name
+foo
+
+//! > module_code
+extern type MyType;
+
+//! > expected_diagnostics
+error: Function `mul` of trait `core::traits::Mul::<?0>` has no implementation in the context.
+ --> lib.cairo:3:9
+    a + a * a;
+        ^***^
+
+error: Function `add` of trait `core::traits::Add::<?1>` has no implementation in the context.
+ --> lib.cairo:3:5
+    a + a * a;
+    ^*******^
+
+//! > ==========================================================================
+
+//! > Test operators.
+
+//! > test_function_name
+test_function_diagnostics
+
+//! > function
+fn foo(a: felt, b: bool) implicits(RangeCheck) {
+    // Valid.
+    a + a * a - a;
+    b & b | b & (a == a | a > a)
+    & (a<a) & (a<=a) & (a>=a);
+    // Errors.
+    a>a>a;
+    a - b
+}
+
+//! > function_name
+foo
+
+//! > module_code
+
+//! > expected_diagnostics
+error: Unexpected argument type. Expected: "core::bool", found: "core::felt".
+ --> lib.cairo:7:9
+    a>a>a;
+        ^
+
+error: Unexpected argument type. Expected: "core::felt", found: "core::bool".
+ --> lib.cairo:8:9
+    a - b
+        ^
+
+error: Unexpected return type. Expected: "()", found: "?17".
+ --> lib.cairo:1:48
+fn foo(a: felt, b: bool) implicits(RangeCheck) {
+                                               ^
+
+error: Function `gt` of trait `core::traits::PartialOrd::<?16>` has no implementation in the context.
+ --> lib.cairo:7:5
+    a>a>a;
+    ^***^
+
+//! > ==========================================================================
+
+//! > Test unary operators.
+
+//! > test_function_name
+test_function_diagnostics
+
+//! > function
+fn foo() {
+    -(1 == 2);
+    !17;
+}
+
+//! > function_name
+foo
+
+//! > module_code
+
+//! > expected_diagnostics
+error: Unary operator '-' is not supported for type 'core::bool'.
+ --> lib.cairo:2:5
+    -(1 == 2);
+    ^
+
+error: Unary operator '!' is not supported for type 'core::felt'.
+ --> lib.cairo:3:5
+    !17;
+    ^

@@ -1,0 +1,37 @@
+//! > Test free function param redefinition.
+
+//! > test_function_name
+test_function_diagnostics
+
+//! > function
+fn foo(a: bool, a: felt) {
+}
+
+//! > function_name
+foo
+
+//! > module_code
+
+//! > expected_diagnostics
+error: Redefinition of parameter name "a" in function "test::foo".
+ --> lib.cairo:1:17
+fn foo(a: bool, a: felt) {
+                ^*****^
+
+//! > ==========================================================================
+
+//! > Test valid free function with implicit params.
+
+//! > test_function_name
+test_function_diagnostics
+
+//! > function
+fn foo(a: bool) implicits(felt, bool) {
+}
+
+//! > function_name
+foo
+
+//! > module_code
+
+//! > expected_diagnostics

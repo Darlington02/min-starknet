@@ -1,0 +1,138 @@
+//! > Test early return
+
+//! > test_function_name
+check_variable_lifetime
+
+//! > function_name
+foo
+
+//! > function_code
+fn foo(x: felt) -> felt {
+    if x == 0 {
+        return 0;
+    }
+    x
+}
+
+//! > module_code
+
+//! > lowering_format
+blk0:
+Inputs:
+Statements:
+  (v1: core::felt) <- 0u
+End:
+  Return(v1)
+
+blk1:
+Inputs: v2: core::NonZero::<core::felt>
+Statements:
+End:
+  Callsite({})
+
+blk2 (root):
+Inputs: v0: core::felt
+Statements:
+  () <- match core::felt_is_zero(v0) {
+    IsZeroResult::Zero => blk0,
+    IsZeroResult::NonZero => blk1,
+  }
+End:
+  Return(v0)
+
+//! > last_use
+v0: ((BlockId(2), 1), 0)
+v1: ((BlockId(0), 1), 0)
+
+//! > drops
+BeginningOfBlock(BlockId(1)): v2
+BeginningOfBlock(BlockId(0)): v0
+
+//! > ==========================================================================
+
+//! > Test return inside block
+
+//! > test_function_name
+check_variable_lifetime
+
+//! > function_name
+foo
+
+//! > function_code
+fn foo(x: felt, y: felt) -> felt {
+    {
+        return y;
+    }
+    x + 1
+}
+
+//! > module_code
+
+//! > lowering_format
+blk0 (root):
+Inputs: v0: core::felt, v1: core::felt
+Statements:
+End:
+  Return(v1)
+
+//! > last_use
+v1: ((BlockId(0), 0), 0)
+
+//! > drops
+BeginningOfBlock(BlockId(0)): v0
+
+//! > ==========================================================================
+
+//! > Test return in all branches
+
+//! > test_function_name
+check_variable_lifetime
+
+//! > function_name
+foo
+
+//! > function_code
+fn foo(x: felt, y: felt) -> felt {
+    if x == 0 {
+        return 1;
+    } else {
+        return 2;
+    }
+    x + y
+}
+
+//! > module_code
+
+//! > lowering_format
+blk0:
+Inputs:
+Statements:
+  (v2: core::felt) <- 1u
+End:
+  Return(v2)
+
+blk1:
+Inputs: v3: core::NonZero::<core::felt>
+Statements:
+  (v4: core::felt) <- 2u
+End:
+  Return(v4)
+
+blk2 (root):
+Inputs: v0: core::felt, v1: core::felt
+Statements:
+  () <- match core::felt_is_zero(v0) {
+    IsZeroResult::Zero => blk0,
+    IsZeroResult::NonZero => blk1,
+  }
+End:
+  Unreachable
+
+//! > last_use
+v2: ((BlockId(0), 1), 0)
+v4: ((BlockId(1), 1), 0)
+v0: ((BlockId(2), 0), 0)
+
+//! > drops
+BeginningOfBlock(BlockId(1)): v3
+BeginningOfBlock(BlockId(2)): v1

@@ -1,0 +1,37 @@
+[package]
+name = "cairo-lang-runner"
+version.workspace = true
+edition.workspace = true
+repository.workspace = true
+license-file.workspace = true
+description = "Basic cairo runner."
+
+[dependencies]
+anyhow.workspace = true
+ark-ff.workspace = true
+ark-std.workspace = true
+cairo-felt.workspace = true
+cairo-vm.workspace = true
+clap.workspace = true
+cairo-lang-compiler = { path = "../cairo-lang-compiler", version = "1.0.0-alpha.2" }
+cairo-lang-casm = { path = "../cairo-lang-casm", version = "1.0.0-alpha.2" }
+cairo-lang-diagnostics = { path = "../cairo-lang-diagnostics", version = "1.0.0-alpha.2" }
+cairo-lang-sierra = { path = "../cairo-lang-sierra", version = "1.0.0-alpha.2" }
+cairo-lang-sierra-ap-change = { path = "../cairo-lang-sierra-ap-change", version = "1.0.0-alpha.2" }
+cairo-lang-sierra-gas = { path = "../cairo-lang-sierra-gas", version = "1.0.0-alpha.2" }
+cairo-lang-sierra-generator = { path = "../cairo-lang-sierra-generator", version = "1.0.0-alpha.2" }
+cairo-lang-sierra-to-casm = { path = "../cairo-lang-sierra-to-casm", version = "1.0.0-alpha.2" }
+cairo-lang-utils = { path = "../cairo-lang-utils", version = "1.0.0-alpha.2" }
+itertools.workspace = true
+num-bigint.workspace = true
+num-traits.workspace = true
+salsa.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+pretty_assertions.workspace = true
+test-case.workspace = true
+
+[[bin]]
+name = "cairo-run"
+path = "src/cli.rs"

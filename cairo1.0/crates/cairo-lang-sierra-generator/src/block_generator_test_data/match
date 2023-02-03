@@ -1,0 +1,83 @@
+//! > Test match zero.
+
+//! > test_function_name
+block_generator_test
+
+//! > function
+fn foo() -> felt {
+    let x = 10;
+    match x {
+        0 => 3,
+        _ => {
+            let y = 4;
+            y
+        }
+    }
+}
+
+//! > function_name
+foo
+
+//! > module_code
+
+//! > semantic_diagnostics
+
+//! > lowering_diagnostics
+
+//! > sierra_gen_diagnostics
+
+//! > sierra_code
+felt_const<10>() -> ([0])
+felt_is_zero([0]) { fallthrough() label0([1]) }
+branch_align() -> ()
+felt_const<3>() -> ([2])
+PushValues([2]: felt) -> ([3])
+jump() { label1() }
+label0:
+branch_align() -> ()
+drop<NonZero<felt>>([1]) -> ()
+felt_const<4>() -> ([4])
+PushValues([4]: felt) -> ([3])
+label1:
+
+//! > ==========================================================================
+
+//! > Test match zero 2.
+
+//! > test_function_name
+block_generator_test
+
+//! > function
+fn foo() -> felt {
+    let x = 7;
+    match x {
+        0 => x,
+        _ => 7,
+    }
+}
+
+//! > function_name
+foo
+
+//! > module_code
+
+//! > semantic_diagnostics
+
+//! > lowering_diagnostics
+
+//! > sierra_gen_diagnostics
+
+//! > sierra_code
+felt_const<7>() -> ([0])
+dup<felt>([0]) -> ([0], [1])
+felt_is_zero([1]) { fallthrough() label0([2]) }
+branch_align() -> ()
+PushValues([0]: felt) -> ([3])
+jump() { label1() }
+label0:
+branch_align() -> ()
+drop<NonZero<felt>>([2]) -> ()
+drop<felt>([0]) -> ()
+felt_const<7>() -> ([4])
+PushValues([4]: felt) -> ([3])
+label1:

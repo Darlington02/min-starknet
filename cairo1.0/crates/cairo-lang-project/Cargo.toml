@@ -1,0 +1,18 @@
+[package]
+name = "cairo-lang-project"
+version.workspace = true
+edition.workspace = true
+repository.workspace = true
+license-file.workspace = true
+description = "Cairo project specification. For example, crates and flags used for compilation."
+
+[dependencies]
+serde.workspace = true
+smol_str.workspace = true
+thiserror.workspace = true
+toml.workspace = true
+cairo-lang-filesystem = { path = "../cairo-lang-filesystem", version = "1.0.0-alpha.2" }
+
+[dev-dependencies]
+indoc.workspace = true
+test-log.workspace = true

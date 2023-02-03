@@ -1,0 +1,40 @@
+//! > Block
+
+//! > test_function_name
+check_find_local_variables
+
+//! > function_name
+foo
+
+//! > function_code
+fn foo() -> bool {
+    let x = true;
+    revoke_ap();
+    x
+}
+
+//! > module_code
+// Revokes ap since this function is recursive.
+fn revoke_ap() -> felt {
+    revoke_ap()
+}
+
+struct MyStruct {
+    a: felt,
+    b: felt,
+}
+
+//! > lowering_format
+blk0 (root):
+Inputs:
+Statements:
+  (v0: ()) <- struct_construct()
+  (v1: core::bool) <- bool::True(v0)
+  (v2: core::felt) <- test::revoke_ap()
+End:
+  Return(v1)
+
+//! > local_variables
+v1
+
+//! > block_infos

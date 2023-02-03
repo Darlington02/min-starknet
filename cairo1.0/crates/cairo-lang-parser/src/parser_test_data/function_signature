@@ -1,0 +1,81 @@
+//! > Test a FunctionSignature syntax tree
+
+//! > test_function_name
+test_partial_parser_tree
+
+//! > cairo_code
+fn foo(a: int, mut b: felt, ref c{}, mut ref d: felt) -> felt implicits(RangeCheck, Hash) nopanic {
+    return a;
+}
+
+//! > top_level_kind
+FunctionSignature
+
+//! > ignored_kinds
+
+//! > expected_diagnostics
+error: Unexpected token, expected ':' followed by a type.
+ --> dummy_file.cairo:1:34
+fn foo(a: int, mut b: felt, ref c{}, mut ref d: felt) -> felt implicits(RangeCheck, Hash) nopanic {
+                                 ^
+
+//! > expected_tree
+└── Top level kind: FunctionSignature
+    ├── lparen (kind: TokenLParen): '('
+    ├── parameters (kind: ParamList)
+    │   ├── item #0 (kind: Param)
+    │   │   ├── modifiers (kind: ModifierList) []
+    │   │   ├── name (kind: TokenIdentifier): 'a'
+    │   │   └── type_clause (kind: TypeClause)
+    │   │       ├── colon (kind: TokenColon): ':'
+    │   │       └── ty (kind: ExprPath)
+    │   │           └── item #0 (kind: PathSegmentSimple)
+    │   │               └── ident (kind: TokenIdentifier): 'int'
+    │   ├── separator #0 (kind: TokenComma): ','
+    │   ├── item #1 (kind: Param)
+    │   │   ├── modifiers (kind: ModifierList)
+    │   │   │   └── child #0 (kind: TokenMut): 'mut'
+    │   │   ├── name (kind: TokenIdentifier): 'b'
+    │   │   └── type_clause (kind: TypeClause)
+    │   │       ├── colon (kind: TokenColon): ':'
+    │   │       └── ty (kind: ExprPath)
+    │   │           └── item #0 (kind: PathSegmentSimple)
+    │   │               └── ident (kind: TokenIdentifier): 'felt'
+    │   ├── separator #1 (kind: TokenComma): ','
+    │   ├── item #2 (kind: Param)
+    │   │   ├── modifiers (kind: ModifierList)
+    │   │   │   └── child #0 (kind: TokenRef): 'ref'
+    │   │   ├── name (kind: TokenIdentifier): 'c'
+    │   │   └── type_clause (kind: TypeClause)
+    │   │       ├── colon: Missing
+    │   │       └── ty: Missing []
+    │   ├── separator #2 (kind: TokenComma): ','
+    │   └── item #3 (kind: Param)
+    │       ├── modifiers (kind: ModifierList)
+    │       │   ├── child #0 (kind: TokenMut): 'mut'
+    │       │   └── child #1 (kind: TokenRef): 'ref'
+    │       ├── name (kind: TokenIdentifier): 'd'
+    │       └── type_clause (kind: TypeClause)
+    │           ├── colon (kind: TokenColon): ':'
+    │           └── ty (kind: ExprPath)
+    │               └── item #0 (kind: PathSegmentSimple)
+    │                   └── ident (kind: TokenIdentifier): 'felt'
+    ├── rparen (kind: TokenRParen): ')'
+    ├── ret_ty (kind: ReturnTypeClause)
+    │   ├── arrow (kind: TokenArrow): '->'
+    │   └── ty (kind: ExprPath)
+    │       └── item #0 (kind: PathSegmentSimple)
+    │           └── ident (kind: TokenIdentifier): 'felt'
+    ├── implicits_clause (kind: ImplicitsClause)
+    │   ├── implicits_kw (kind: TokenImplicits): 'implicits'
+    │   ├── lparen (kind: TokenLParen): '('
+    │   ├── implicits (kind: ImplicitsList)
+    │   │   ├── item #0 (kind: ExprPath)
+    │   │   │   └── item #0 (kind: PathSegmentSimple)
+    │   │   │       └── ident (kind: TokenIdentifier): 'RangeCheck'
+    │   │   ├── separator #0 (kind: TokenComma): ','
+    │   │   └── item #1 (kind: ExprPath)
+    │   │       └── item #0 (kind: PathSegmentSimple)
+    │   │           └── ident (kind: TokenIdentifier): 'Hash'
+    │   └── rparen (kind: TokenRParen): ')'
+    └── optional_no_panic (kind: TokenNoPanic): 'nopanic'

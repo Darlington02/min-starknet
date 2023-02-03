@@ -1,0 +1,45 @@
+//! > Test variable lifetime for block
+
+//! > test_function_name
+check_variable_lifetime
+
+//! > function_name
+foo
+
+//! > function_code
+fn foo(x: felt) -> felt {
+    let a = x + x;
+    let z = {
+        let b = a + a;
+        let c = a + 1;
+        {
+            b
+        };
+        20
+    };
+    z
+}
+
+//! > module_code
+
+//! > lowering_format
+blk0 (root):
+Inputs: v0: core::felt
+Statements:
+  (v1: core::felt) <- core::felt_add(v0, v0)
+  (v2: core::felt) <- core::felt_add(v1, v1)
+  (v3: core::felt) <- 1u
+  (v4: core::felt) <- core::felt_add(v1, v3)
+  (v5: core::felt) <- 20u
+End:
+  Return(v5)
+
+//! > last_use
+v5: ((BlockId(0), 5), 0)
+v3: ((BlockId(0), 3), 1)
+v1: ((BlockId(0), 3), 0)
+v0: ((BlockId(0), 0), 1)
+
+//! > drops
+PostStatement((BlockId(0), 3)): v4
+PostStatement((BlockId(0), 1)): v2

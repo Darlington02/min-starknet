@@ -1,0 +1,408 @@
+//! > Test unreachable code.
+
+//! > test_function_name
+test_function_lowering
+
+//! > function
+fn foo(a: felt) -> felt {
+    return a + a * a;
+    5;6;7
+}
+
+//! > function_name
+foo
+
+//! > module_code
+
+//! > semantic_diagnostics
+
+//! > lowering_diagnostics
+error: Unreachable code
+ --> lib.cairo:3:5
+    5;6;7
+    ^**^
+
+//! > lowering_structured
+blk0 (root):
+Inputs: v0: core::felt
+Initial refs:
+Statements:
+  (v1: core::felt) <- core::FeltMul::mul(v0, v0)
+  (v2: core::felt) <- core::FeltAdd::add(v0, v1)
+End:
+  Return(v2)
+
+//! > lowering_flat
+blk0 (root):
+Inputs: v0: core::felt
+Statements:
+  (v1: core::felt) <- core::felt_mul(v0, v0)
+  (v2: core::felt) <- core::felt_add(v0, v1)
+End:
+  Return(v2)
+
+//! > ==========================================================================
+
+//! > Test single patterns.
+
+//! > test_function_name
+test_function_lowering
+
+//! > function
+fn foo(a: felt) -> felt {
+    let (_, b) = (1, a);
+    5
+}
+
+//! > function_name
+foo
+
+//! > module_code
+
+//! > semantic_diagnostics
+
+//! > lowering_diagnostics
+
+//! > lowering_structured
+blk0 (root):
+Inputs: v0: core::felt
+Initial refs:
+Statements:
+  (v1: core::felt) <- 1u
+  (v2: core::felt) <- 5u
+End:
+  Return(v2)
+
+//! > lowering_flat
+blk0 (root):
+Inputs: v0: core::felt
+Statements:
+  (v1: core::felt) <- 1u
+  (v2: core::felt) <- 5u
+End:
+  Return(v2)
+
+//! > ==========================================================================
+
+//! > Test compound expressions.
+
+//! > test_function_name
+test_function_lowering
+
+//! > function
+fn foo(a: felt) -> felt {
+  let x = {7;};
+  {x;}
+  let y = if 1 == 1 { 6 } else { 7 };
+  foo(3) + 5 * {3; a + 0}
+}
+
+//! > function_name
+foo
+
+//! > module_code
+
+//! > semantic_diagnostics
+
+//! > lowering_diagnostics
+
+//! > lowering_structured
+blk0:
+Inputs:
+Initial refs:
+Statements:
+  (v6: core::felt) <- 6u
+End:
+  Callsite({v6 -> v9})
+
+blk1:
+Inputs: v7: core::NonZero::<core::felt>
+Initial refs:
+Statements:
+  (v8: core::felt) <- 7u
+End:
+  Callsite({v8 -> v9})
+
+blk2 (root):
+Inputs: v0: core::felt
+Initial refs:
+Statements:
+  (v1: core::felt) <- 7u
+  (v2: ()) <- struct_construct()
+  (v3: core::felt) <- 1u
+  (v4: core::felt) <- 1u
+  (v5: core::felt) <- core::FeltSub::sub(v3, v4)
+  () <- match core::felt_is_zero(v5) {
+    IsZeroResult::Zero => blk0,
+    IsZeroResult::NonZero => blk1,
+  }
+  (v10: core::felt) <- 3u
+  (v11: core::felt) <- test::foo(v10)
+  (v12: core::felt) <- 5u
+  (v13: core::felt) <- 3u
+  (v14: core::felt) <- 0u
+  (v15: core::felt) <- core::FeltAdd::add(v0, v14)
+  (v16: core::felt) <- core::FeltMul::mul(v12, v15)
+  (v17: core::felt) <- core::FeltAdd::add(v11, v16)
+End:
+  Return(v17)
+
+//! > lowering_flat
+blk0:
+Inputs:
+Statements:
+  (v6: core::felt) <- 6u
+End:
+  Callsite({})
+
+blk1:
+Inputs: v7: core::NonZero::<core::felt>
+Statements:
+  (v8: core::felt) <- 7u
+End:
+  Callsite({})
+
+blk2 (root):
+Inputs: v0: core::felt
+Statements:
+  (v1: core::felt) <- 7u
+  (v2: ()) <- struct_construct()
+  (v3: core::felt) <- 1u
+  (v4: core::felt) <- 1u
+  (v5: core::felt) <- core::felt_sub(v3, v4)
+  () <- match core::felt_is_zero(v5) {
+    IsZeroResult::Zero => blk0,
+    IsZeroResult::NonZero => blk1,
+  }
+  (v10: core::felt) <- 3u
+  (v11: core::felt) <- test::foo(v10)
+  (v12: core::felt) <- 5u
+  (v13: core::felt) <- 3u
+  (v14: core::felt) <- 0u
+  (v15: core::felt) <- core::felt_add(v0, v14)
+  (v16: core::felt) <- core::felt_mul(v12, v15)
+  (v17: core::felt) <- core::felt_add(v11, v16)
+End:
+  Return(v17)
+
+//! > ==========================================================================
+
+//! > Test match enum.
+
+//! > test_function_name
+test_function_lowering
+
+//! > function
+fn foo(x: MyEnum) -> felt {
+  match x {
+    MyEnum::A(inner) => {return 5;},
+    MyEnum::B(inner) => {inner},
+    MyEnum::C(inner) => {
+      // A workaround to drop inner.
+      let (a, b) = unbox(inner);
+      7
+    }
+  }
+}
+
+//! > function_name
+foo
+
+//! > module_code
+enum MyEnum {
+  A: (),
+  B: felt,
+  C: Box::<((), felt)>,
+}
+
+//! > semantic_diagnostics
+
+//! > lowering_diagnostics
+
+//! > lowering_structured
+blk0:
+Inputs: v1: ()
+Initial refs:
+Statements:
+  (v2: core::felt) <- 5u
+End:
+  Return(v2)
+
+blk1:
+Inputs: v3: core::felt
+Initial refs:
+Statements:
+End:
+  Callsite({v3 -> v8})
+
+blk2:
+Inputs: v4: core::box::Box::<((), core::felt)>
+Initial refs:
+Statements:
+  (v5: (), v6: core::felt) <- core::box::unbox::<((), core::felt)>(v4)
+  (v7: core::felt) <- 7u
+End:
+  Callsite({v7 -> v8})
+
+blk3 (root):
+Inputs: v0: test::MyEnum
+Initial refs:
+Statements:
+  () <- match_enum(v0) {
+    MyEnum::A => blk0,
+    MyEnum::B => blk1,
+    MyEnum::C => blk2,
+  }
+End:
+  Return(v8)
+
+//! > lowering_flat
+blk0:
+Inputs: v1: ()
+Statements:
+  (v2: core::felt) <- 5u
+End:
+  Return(v2)
+
+blk1:
+Inputs: v3: core::felt
+Statements:
+End:
+  Callsite({v3 -> v8})
+
+blk2:
+Inputs: v4: core::box::Box::<((), core::felt)>
+Statements:
+  (v5: (), v6: core::felt) <- core::box::unbox::<((), core::felt)>(v4)
+  (v7: core::felt) <- 7u
+End:
+  Callsite({v7 -> v8})
+
+blk3 (root):
+Inputs: v0: test::MyEnum
+Statements:
+  () <- match_enum(v0) {
+    MyEnum::A => blk0,
+    MyEnum::B => blk1,
+    MyEnum::C => blk2,
+  }
+End:
+  Return(v8)
+
+//! > ==========================================================================
+
+//! > Test literal generic argument.
+
+//! > test_function_name
+test_function_lowering
+
+//! > function
+fn foo(a : Array::<felt, 5>) -> felt {
+  felt_const::<17>()
+}
+
+//! > function_name
+foo
+
+//! > module_code
+extern type Array<T, const N>;
+
+//! > semantic_diagnostics
+
+//! > lowering_diagnostics
+error: Variable not dropped.
+ --> lib.cairo:2:8
+fn foo(a : Array::<felt, 5>) -> felt {
+       ^
+
+//! > lowering_structured
+blk0 (root):
+Inputs: v0: test::Array::<core::felt, 5>
+Initial refs:
+Statements:
+  (v1: core::felt) <- core::felt_const::<LiteralLongId { value: 17 }>()
+End:
+  Return(v1)
+
+//! > lowering_flat
+blk0 (root):
+Inputs: v0: test::Array::<core::felt, 5>
+Statements:
+  (v1: core::felt) <- core::felt_const::<LiteralLongId { value: 17 }>()
+End:
+  Return(v1)
+
+//! > ==========================================================================
+
+//! > Test passing same argument as two ref params.
+
+//! > Comments
+TODO(spapini): Make this a semantic diagnostic.
+
+//! > test_function_name
+test_function_lowering
+
+//! > function
+fn foo(mut a : felt) -> felt {
+  bar(ref a, ref a)
+}
+
+//! > function_name
+foo
+
+//! > module_code
+fn bar(ref a: felt, ref b: felt) -> felt  {
+  a = 0;
+  b = 1;
+  a + b
+}
+
+//! > semantic_diagnostics
+
+//! > lowering_diagnostics
+
+//! > lowering_structured
+blk0 (root):
+Inputs: v0: core::felt
+Initial refs:
+Statements:
+  (v2: core::felt, v3: core::felt, v1: core::felt) <- test::bar(v0, v0)
+End:
+  Return(v1)
+
+//! > lowering_flat
+blk0 (root):
+Inputs: v0: core::felt
+Statements:
+  (v2: core::felt, v3: core::felt, v1: core::felt) <- test::bar(v0, v0)
+End:
+  Return(v1)
+
+//! > ==========================================================================
+
+//! > Test concretization with bad types.
+
+//! > test_function_name
+test_function_lowering
+
+//! > function
+fn foo(mut data: Array::<felt>) -> u128 {
+   serde::Serde::<u128>::deserialize(ref data)
+}
+
+//! > function_name
+foo
+
+//! > module_code
+
+//! > semantic_diagnostics
+error: Unexpected return type. Expected: "core::integer::u128", found: "core::option::Option::<core::integer::u128>".
+ --> lib.cairo:1:41
+fn foo(mut data: Array::<felt>) -> u128 {
+                                        ^
+
+//! > lowering_diagnostics
+
+//! > lowering_structured
+
+//! > lowering_flat
