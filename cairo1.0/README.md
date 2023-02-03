@@ -1,8 +1,6 @@
 <div align="center">
-  <h1>Cairo 🐺 </h1>
+  <h1>MIN-STARKNET - Cairo 1.0🐺 </h1>
   <h2> ⚡ Blazing ⚡ fast ⚡ compiler for Cairo, written in 🦀 Rust 🦀 </h2>
-  <img src="./resources/img/cairo-logo-square.png" height="200" width="200">
-  <br />
   <a href="https://github.com/starkware-libs/cairo/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
   -
   <a href="https://github.com/starkware-libs/cairo/issues/new?assignees=&labels=enhancement&template=02_FEATURE_REQUEST.md&title=feat%3A+">Request a Feature</a>
@@ -19,30 +17,12 @@
 
 </div>
 
-<details open="open">
-<summary>Table of Contents</summary>
-
-- [About](#about)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Compiling and running Cairo files](#compiling-and-running-cairo-files)
-  - [Development](#development)
-    - [Install the language server](#install-the-language-server)
-- [Roadmap](#roadmap)
-- [Support](#support)
-- [Project assistance](#project-assistance)
-- [Contributing](#contributing)
-- [Authors \& contributors](#authors--contributors)
-- [Security](#security)
-- [License](#license)
-
-</details>
 
 ---
 
-## About
+## MIN-STARKNET
 
-Cairo is the first Turing-complete language for creating provable programs for general computation.
+Min-StarkNet is a side project influenced by Miguel Piedrafita's [Lil-Web3](https://github.com/m1guelpf/lil-web3), aimed at creating minimal, intentionally-limited implementations of different protocols, standards and concepts to help a Cairo beginner learn and become familiar with basic Cairo syntaxes, quickly advancing from beginner to intermediate😉.
 
 ## Getting Started
 
@@ -54,16 +34,32 @@ Cairo is the first Turing-complete language for creating provable programs for g
 rustup override set stable && rustup update && cargo test
 ```
 
+Having installed Rust, go ahead to clone the repo, by running the command below on a terminal:
+
+`git clone git@github.com:Darlington02/min-starknet.git`
+
+**PS: This project has three branches! The `master` branch serves as a guide, the `develop` branch gives a boilerplate for building on your own, the `Cairo1.0` branch contains all the Cairo1.0 related codes. Simply checkout to the `Cairo1.0` branch to start playing around with the repo**
+
 ### Compiling and running Cairo files
 
-Compile Cairo to Sierra:
+Compile Cairo Contracts to Sierra:
 ```bash
 cargo run --bin cairo-compile -- /path/to/input.cairo /path/to/output.sierra --replace-ids
 ```
 
-Compile Sierra to casm (Cairo assembly):
+Compile Starknet Contracts to Sierra:
+```bash
+cargo run --bin starknet-compile -- /path/to/input.cairo /path/to/output.sierra --replace-ids
+```
+
+Compile Cairo-Sierra to casm (Cairo assembly):
 ```bash
 cargo run --bin sierra-compile -- /path/to/input.sierra /path/to/output.casm
+```
+
+Compile Starknet-Sierra to casm (Cairo assembly):
+```bash
+cargo run --bin starknet-sierra-compile -- /path/to/input.sierra /path/to/output.casm
 ```
 
 Run Cairo code directly:
@@ -73,53 +69,39 @@ cargo run --bin cairo-run -- -p /path/to/file.cairo
 
 See more information [here](./crates/cairo-lang-runner/README.md). You can also find Cairo examples in the [examples](./examples) directory.
 
-For running tests specifically, see here: [cairo-test](./crates/cairo-lang-test-runner/README.md)
 
-### Development
-
-#### Install the language server
+## Setting up VSCode for Cairo 1.0 Development
 
 Follow the instructions in [vscode-cairo](./vscode-cairo/README.md).
 
-## Roadmap
+## Description
 
-The next milestone is it to reach feature parity with the old Cairo version.
-You can track the exact progress [here](./docs/FEATURE_PARITY.md).
+### MIN-ENS
 
-## Support
+Min-ens is a simple implementation of a namespace service in Cairo. It contains a single external function `store_name` and a single view function `get_name`.
+A storage variable `names` which is a mapping of **address** to **name**, is also used to store the names assigned to every address, and an event **stored_name** which is emitted each time a name is stored!
 
-- We encourage developers to ask and answer questions on [stackoverflow](https://stackoverflow.com/questions/tagged/cairo-lang).
-- Contact options listed on [this GitHub profile](https://github.com/starkware-libs)
+A basic test file is also availabe [here](https://github.com/Darlington02/min-starknet/blob/master/tests/test_ens.cairo) to help you learn the basics of writing tests in Cairo with Protostar.
 
-## Project assistance
+### MIN-ERC20
 
-If you want to say **thank you** or/and support active development of Cairo:
+One of the basic things we learn to do whilst starting out with Smart contract development is learning to build and deploy the popular ERC2O token contract. In this repo, we implement the ERC20 standard from scratch.
 
-- Add a [GitHub Star](https://github.com/starkware-libs/cairo) to the project.
-- Tweet about your Cairo work.
-- Write interesting articles about the project on [Dev.to](https://dev.to/), [Medium](https://medium.com/) or your personal blog.
+The goal for this project is to build and deploy a simple ERC20 token contract.
 
-Together, we can make Cairo **better**!
+## PLAYGROUND
 
-## Contributing
+Looking for an already deployed version of these contracts? Sadly you can't deploy Cairo 1.0 contracts to Starknet ATM, should be possible with StarkNet Alpha v0.11.0.
 
-First off, thanks for taking the time to contribute! Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make will benefit everybody else and are **greatly appreciated**.
+## CONTRIBUTION GUIDELINES
 
-Please read [our contribution guidelines](docs/CONTRIBUTING.md), and thank you for being involved!
+In order to ensure this repository is kept as simple and minimalistic as possible to not get beginners confused, contributions in form of adding new protocols would not be accepted, but if you feel its worth adding to the list, send me a DM on Twitter [Darlington Nnam](https://twitter.com/0xdarlington). In the meantime, you could contribute in form of modifications to the existing projects listed. A good place to get started is checking out the open issues.
+Ensure to heed the following in the course of contribution:
 
-## Authors & contributors
+1. Keep implementation as simple and minimalistic as possible.
+2. Comment codes in details to enable others understand what your codes do. Natspec is the preferred choice.
+3. Keep your codes simple and clean.
+4. When opening PRs, give a detailed description of what you are trying to fix or add.
+   Let's build a great learning REPO for frens looking to get started with Cairo. 😉
 
-For a full list of all authors and contributors, see [the contributors page](https://github.com/starkware-libs/cairo/contributors).
-
-## Security
-
-Cairo follows good practices of security, but 100% security cannot be assured.
-Cairo is provided **"as is"** without any **warranty**. Use at your own risk.
-
-_For more information and to report security issues, please refer to our [security documentation](docs/SECURITY.md)._
-
-## License
-
-This project is licensed under the **Apache 2.0**.
-
-See [LICENSE](LICENSE) for more information.
+**If this repo was helpful, do give it a STAR!**

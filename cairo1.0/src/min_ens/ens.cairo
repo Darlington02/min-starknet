@@ -1,13 +1,11 @@
 #[contract]
 
 mod ENS {
+    // @dev library imports
     use starknet::get_caller_address;
 
-    // 
-    // STORAGE VARIABLES
-    // 
+    // @dev storage variables
     struct Storage{
-        // @dev stores the mapping of a name to each address
         names: LegacyMap::<felt, felt>,
     }
 
