@@ -110,8 +110,7 @@ mod AMM {
     fn do_swap(account_id: felt, token_from: felt, token_to: felt, amount_from: felt) -> felt {
         let amm_from_balance = get_pool_token_balance(token_from);
         let amm_to_balance = get_pool_token_balance(token_to);
-        //let amount_to = (amm_to_balance * amount_from) / (amm_from_balance + amount_from); this is uncommented cause div is yet to be implemented, we'd use a dummy instead
-        let amount_to = 45;
+        let amount_to = (amm_to_balance * amount_from) / (amm_from_balance + amount_from);
 
         modify_account_balance(account_id, token_from, (0 - amount_from)); // (0 - amount_from) is same as -amount_from 
         modify_account_balance(account_id, token_to, amount_to);
