@@ -1,16 +1,14 @@
 #[contract]
 
 mod AMM {
-    // @dev library imports
     use starknet::get_caller_address;
 
-    const BALANCE_UPPER_BOUND: felt = 1048284; // dummy rep - should rather be 2 ^ 64
-    const POOL_UPPER_BOUND: felt = 103748; // dummy rep - should rather be 2 ^ 30
-    const ACCOUNT_BALANCE_BOUND: felt = 1073741; // (2 ^ 30 / 1000)
+    const BALANCE_UPPER_BOUND: felt = 1048284;
+    const POOL_UPPER_BOUND: felt = 103748;
+    const ACCOUNT_BALANCE_BOUND: felt = 1073741;
     const TOKEN_TYPE_A: felt = 1;
     const TOKEN_TYPE_B: felt = 2;
 
-    // @dev storage variables
     struct Storage {
         account_balance: LegacyMap::<(felt, felt), felt>,
         pool_balance: LegacyMap::<felt, felt>,
@@ -71,17 +69,13 @@ mod AMM {
     fn swap(token_from: felt, amount_from: felt) -> felt {
         let account_id = get_caller_address();
 
-        // verify token_from is TOKEN_TYPE_A or TOKEN_TYPE_B
         assert(token_from - TOKEN_TYPE_A == 0 | token_from - TOKEN_TYPE_B == 0, 'token not allowed in the pool!');
-        // check requested amount_from is valid
         assert((BALANCE_UPPER_BOUND - 1) > amount_from, 'exceeds maximum allowed tokens');
-        // check user has enough funds
         let account_from_balance = get_account_token_balance(account_id, token_from);
         assert(account_from_balance > amount_from, 'Insufficient balance!');
 
         let token_to = get_opposite_token(token_from);
         let amount_to = do_swap(account_id, token_from, token_to, amount_from);
-
         return (amount_to);
     }
 
@@ -116,12 +110,14 @@ mod AMM {
     fn do_swap(account_id: felt, token_from: felt, token_to: felt, amount_from: felt) -> felt {
         let amm_from_balance = get_pool_token_balance(token_from);
         let amm_to_balance = get_pool_token_balance(token_to);
-        //let amount_to = (amm_to_balance * amount_from) / (amm_from_balance + amount_from); this is uncommented cause its yet to be implemented, we'd use a dummy instead
+        //let amount_to = (amm_to_balance * amount_from) / (amm_from_balance + amount_from); this is uncommented cause div is yet to be implemented, we'd use a dummy instead
         let amount_to = 45;
 
-        // update token_from balances
         modify_account_balance(account_id, token_from, (0 - amount_from)); // (0 - amount_from) is same as -amount_from 
+        modify_account_balance(account_id, token_to, amount_to);
         set_pool_token_balance(token_from, (amm_from_balance + amount_from));
+        set_pool_token_balance(token_to, (amm_to_balance - amount_to));
+
         return (amount_to);
     }
 }
