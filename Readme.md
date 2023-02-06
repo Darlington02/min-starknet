@@ -14,20 +14,20 @@ Having installed Protostar, go ahead to clone the repo, by running the command b
 
 **PS: This project has two branches! The `master` branch serves as a guide, the `develop` branch gives a boilerplate for building on your own. Once you are ready to practice on your own, simply checkout to the `develop` branch which contains interfaces with no codes for each of the listed projects, and ensure to follow along with the repo, in the order specified below for maximum efficiency. Endeavour to always read the code comments to effectively understand the underlying codes, AND might be useful to also note that goerli2 was the network mostly used throughout development**
 
-Finally, this repository is targeted at those with basic understanding of how Cairo and StarkNet works. If you do not understand basic Cairo syntax, then take out time to first go through my Journey through Cairo series on [medium](https://medium.com/@darlingtonnnam).
+Finally, this repository is targeted at those with basic understanding of how Cairo and StarkNet work. If you do not understand basic Cairo syntax, then take out time to first go through my Journey through Cairo series on [medium](https://medium.com/@darlingtonnnam).
 
 ## MIN-ENS
 
 Min-ens is a simple implementation of a namespace service in Cairo. It contains a single external function `store_name` and a single view function `get_name`.
 A storage variable `names` which is a mapping of **address** to **name**, is also used to store the names assigned to every address, and an event **stored_name** which is emitted each time a name is stored!
 
-A basic test file is also availabe [here](https://github.com/Darlington02/min-starknet/blob/master/tests/test_ens.cairo) to help you learn the basics of writing tests in Cairo with Protostar.
+A basic test file is also available [here](https://github.com/Darlington02/min-starknet/blob/master/tests/test_ens.cairo) to help you learn the basics of writing tests in Cairo with Protostar.
 
 ## MIN-ERC20
 
 One of the basic things we learn to do whilst starting out with Smart contract development is learning to build and deploy the popular ERC2O token contract. In this repo, we implement the ERC20 standard using [Openzeppelin's library](https://github.com/OpenZeppelin/cairo-contracts/blob/main/src/openzeppelin/token/erc20/library.cairo).
 
-The goal for this project is to build and deploy a simple ERC20 token contract.
+The goal of this project is to build and deploy a simple ERC20 token contract.
 
 To get better at writing tests, you could try understanding and replicating the ERC20 cairo contract test [here](https://github.com/Darlington02/min-starknet/blob/master/tests/test_erc20.cairo).
 
@@ -60,11 +60,11 @@ There's also a test file created [here](https://github.com/Darlington02/min-star
 ## MIN-ICO
 
 min-ico is a minimal implementation of a presale or ICO in Cairo.
-An initial coin offerings (ICOs) is the equivalent of an IPO, a popular way to raise funds for products and services usually related to cryptocurrency.
+An initial coin offering (ICOs) is the equivalent of an IPO, a popular way to raise funds for products and services usually related to cryptocurrency.
 
 The thought process for this application is a user interested in participating in the ICO needs to first register with 0.001 worth of accepted token(token A) by calling the `register` function, then once the ICO duration specified using the `ICO_DURATION` expires, he can now call the external function `claim` to claim his share of ICO tokens.
 
-PS: All users partaking in the ICO pays same amount for registration, and claims equal amount of tokens.
+PS: All users partaking in the ICO pay the same amount for registration, and claim equal amount of tokens.
 
 **Note: Remember to call approve(<contract address>, reg_amount) on the StarkNet ETH contract before calling the `register` function**
 
@@ -90,13 +90,13 @@ Each time a bridge happens from L2 -> L1, the bridged tokens are locked in the L
 
 ## MIN-UPGRADABILITY
 
-With Regenesis at hand, its become a neccessity to understand how Upgradeable contracts work, in order to successfully migrate existing contracts to Cairo v1.0. In this section we are going to be learning how to create upgradeable contracts by coding up an upgradeable ERC20 token.
+With Regenesis at hand, its become a necessity to understand how Upgradeable contracts work, in order to successfully migrate existing contracts to Cairo v1.0. In this section we are going to be learning how to create upgradeable contracts by coding up an upgradeable ERC20 token.
 
-In simple terms an Upgradeable contract is one which allows you change the underlying code/logic of your smart contract, without neccessarily altering the entry point (contract address) of your dApp. This is done by separating your contracts into a Proxy and implementation. The Proxy serves as the entry point and also holds the contract storage, whilst the Implementation contains the code/logic of your dApp. For a deeper dive checkout this article by David Baretto [here](https://medium.com/starknet-edu/creating-upgradable-smart-contracts-on-starknet-12b7d9bd60c7)
+In simple terms an Upgradeable contract is one which allows you change the underlying code/logic of your smart contract, without necessarily altering the entry point (contract address) of your dApp. This is done by separating your contracts into a Proxy and implementation. The Proxy serves as the entry point and also holds the contract storage, whilst the Implementation contains the code/logic of your dApp. For a deeper dive checkout this article by David Baretto [here](https://medium.com/starknet-edu/creating-upgradable-smart-contracts-on-starknet-12b7d9bd60c7)
 
 Thanks to the team at Openzeppelin, we already have a good template to follow. First we'd need to copy the [proxy contract](https://github.com/OpenZeppelin/cairo-contracts/blob/main/src/openzeppelin/upgrades/presets/Proxy.cairo), into our repo. This proxy contract contains some important functions we'd need to understand:
 
-- The `constructor` which takes in 4 params: `implementation_hash` which is the class hash of our implementation contract, `selector` which is the selector name of our initializer function (1295919550572838631247819983596733806859788957403169325509326258146877103642), `calldata_len` which is the length of our calldata (implementation contract's constructor arguments), and `calldata` which is the implementation contract's constructor arguments. The constructor sets the impelementation hash, and initializes the implementation contract.
+- The `constructor` which takes in 4 params: `implementation_hash` which is the class hash of our implementation contract, `selector` which is the selector name of our initializer function (1295919550572838631247819983596733806859788957403169325509326258146877103642), `calldata_len` which is the length of our calldata (implementation contract's constructor arguments), and `calldata` which is the implementation contract's constructor arguments. The constructor sets the implementation hash, and initializes the implementation contract.
 
 - The `__default__` function which is responsible for redirecting any function call whose selector can't be found in the proxy's contract to the implementation.
 
@@ -161,7 +161,7 @@ Looking for an already deployed version of these contracts? check them out on St
 
 # CONTRIBUTION GUIDELINES
 
-In order to ensure this repository is kept as simple and minimalistic as possible to not get beginners confused, contributions in form of adding new protocols would not be accepted, but if you feel its worth adding to the list, send me a DM on Twitter [Darlington Nnam](https://twitter.com/0xdarlington). In the meantime, you could contribute in form of modifications to the existing projects listed. A good place to get started is checking out the open issues.
+In order to ensure this repository is kept as simple and minimalistic as possible to not get beginners confused, contributions in form of adding new protocols would not be accepted, but if you feel it's worth adding to the list, send me a DM on Twitter [Darlington Nnam](https://twitter.com/0xdarlington). In the meantime, you could contribute in form of modifications to the existing projects listed. A good place to get started is checking out the open issues.
 Ensure to heed the following in the course of contribution:
 
 1. Keep implementation as simple and minimalistic as possible.
